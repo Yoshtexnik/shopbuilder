@@ -16,6 +16,9 @@ async def start(message: Message, state: FSMContext, shop):
         return
     await state.clear()
     await message.answer(texts.welcome(shop), reply_markup=keyboards.main_menu(shop))
+    webapp_kb = keyboards.webapp_inline(shop)
+    if webapp_kb:
+        await message.answer("Tezroq buyurtma berish uchun Mini App'ni oching 👇", reply_markup=webapp_kb)
 
 
 @router.message(Command("chatid"))

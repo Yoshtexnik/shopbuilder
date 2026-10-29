@@ -13,9 +13,16 @@ def main_menu(shop) -> ReplyKeyboardMarkup:
         [KeyboardButton(text=texts.BTN_MENU), KeyboardButton(text=texts.BTN_CART)],
         [KeyboardButton(text=texts.BTN_ORDERS), KeyboardButton(text=texts.BTN_CONTACT)],
     ]
-    if shop.webapp_enabled and shop.webapp_url.startswith("https://"):
-        rows.insert(0, [KeyboardButton(text="🌐 Mini App orqali buyurtma", web_app=WebAppInfo(url=shop.webapp_url))])
     return ReplyKeyboardMarkup(keyboard=rows, resize_keyboard=True)
+
+
+def webapp_inline(shop) -> InlineKeyboardMarkup | None:
+    """Mini App'ni inline web_app tugmasi bilan ochish: Telegram initData imzosini shu yo'l bilan ishonchli beradi."""
+    if not (shop.webapp_enabled and shop.webapp_url.startswith("https://")):
+        return None
+    return InlineKeyboardMarkup(inline_keyboard=[[
+        InlineKeyboardButton(text="🌐 Mini App orqali buyurtma", web_app=WebAppInfo(url=shop.webapp_url))
+    ]])
 
 
 def cancel_only() -> ReplyKeyboardMarkup:

@@ -14,7 +14,7 @@ from apps.orders.services import OrderError, build_quote, create_order, payment_
 from apps.payments.links import pay_url
 from apps.shops.models import Shop
 
-from .auth import validate_init_data
+from .auth import check_init_data
 
 logger = logging.getLogger(__name__)
 
@@ -106,9 +106,12 @@ def quote(request, shop_id: int):
 @require_POST
 def order(request, shop_id: int):
     shop = _shop(shop_id)
-    tg_user = validate_init_data(request.headers.get("X-Telegram-Init-Data", ""), shop.bot_token)
+    tg_user, reason = check_init_data(request.headers.get("X-Telegram-Init-Data", ""), shop.bot_token)
     if tg_user is None:
-        return JsonResponse({"ok": False, "error": "Telegram orqali qayta oching."}, status=401)
+        logger.warning("Mini App initData rad etildi (shop=%s, sabab=%s)", shop.pk, reason)
+        error = ("Mini App'ni botdagi «Buyurtma» tugmasi yoki /start dagi 🌐 tugma orqali oching (havola orqali emas)."
+                 if reason == "empty" else "Sessiya yaroqsiz yoki eskirgan. Mini App'ni yopib, botdan qayta oching.")
+        return JsonResponse({"ok": False, "error": error}, status=401)
     data = _json(request)
     full_name = f"{tg_user.get('first_name', '')} {tg_user.get('last_name', '')}".strip()[:150]
     customer, _ = Customer.objects.get_or_create(

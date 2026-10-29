@@ -1,7 +1,7 @@
 from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.types import BotCommand
+from aiogram.types import BotCommand, MenuButtonDefault, MenuButtonWebApp, WebAppInfo
 from asgiref.sync import async_to_sync
 
 ALLOWED_UPDATES = ["message", "callback_query"]
@@ -22,6 +22,10 @@ async def asetup_webhook(shop) -> str:
             BotCommand(command="start", description="Boshlash"),
             BotCommand(command="chatid", description="Chat ID ni ko'rsatish"),
         ])
+        if shop.webapp_enabled and shop.webapp_url.startswith("https://"):
+            await bot.set_chat_menu_button(menu_button=MenuButtonWebApp(text="Buyurtma", web_app=WebAppInfo(url=shop.webapp_url)))
+        else:
+            await bot.set_chat_menu_button(menu_button=MenuButtonDefault())
         return me.username or ""
     finally:
         await bot.session.close()

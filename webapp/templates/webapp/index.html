@@ -62,6 +62,7 @@
 <body>
 <header><h1 id="title">{{ shop.name }}</h1><p id="sub"></p></header>
 <div id="closed" class="closed" hidden></div>
+<div id="notice" class="closed" hidden></div>
 <nav id="cats"></nav>
 <main id="list"></main>
 <div id="bar"><button id="barBtn"></button></div>
@@ -122,6 +123,10 @@ async function load() {
   $("title").textContent = st.shop.name;
   $("sub").textContent = [st.shop.hours && "Ish vaqti " + st.shop.hours, st.shop.phone].filter(Boolean).join(" · ");
   if (!st.shop.is_open) { $("closed").hidden = false; $("closed").textContent = "Hozir yopiqmiz. Ish vaqti: " + st.shop.hours; }
+  if (!tg || !tg.initData) {
+    $("notice").hidden = false;
+    $("notice").textContent = "Buyurtma berish uchun Mini App'ni botdagi «Buyurtma» tugmasi orqali oching.";
+  }
   renderMenu(); renderBar();
 }
 
