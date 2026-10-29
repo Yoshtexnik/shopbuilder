@@ -1,0 +1,11 @@
+# Serverda Caddy o'rnatilgan bo'lsa: /etc/caddy/Caddyfile ga ko'chiring, domenni almashtiring.
+bot.example.uz {
+	encode gzip
+
+	handle_path /media/* {
+		root * /opt/shopbuilder/media
+		file_server
+	}
+
+	reverse_proxy 127.0.0.1:8000
+}

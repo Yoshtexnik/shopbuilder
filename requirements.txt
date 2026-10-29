@@ -1,0 +1,8 @@
+Django>=5.0,<5.2
+aiogram>=3.13,<4
+psycopg[binary]>=3.1
+redis>=5.0
+cryptography>=42
+Pillow>=10
+whitenoise>=6.6
+uvicorn[standard]>=0.30

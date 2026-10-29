@@ -1,0 +1,15 @@
+[Unit]
+Description=ShopBuilder (Django + aiogram)
+After=network.target postgresql.service redis-server.service
+
+[Service]
+User=shopbuilder
+Group=shopbuilder
+WorkingDirectory=/opt/shopbuilder
+# Redis o'rnatmagan bo'lsangiz --workers 1 qoldiring (FSM xotirada turadi). Redis bilan 2-4 ga ko'taring.
+ExecStart=/opt/shopbuilder/venv/bin/uvicorn config.asgi:application --host 127.0.0.1 --port 8000 --workers 1 --proxy-headers --forwarded-allow-ips=127.0.0.1
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
