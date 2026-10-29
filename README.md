@@ -127,3 +127,4 @@ Bot oqimi soxta Telegram sessiyasi bilan, to'lovlar Click/Payme protokoli bo'yic
   Click test rejimidan o'tkazing.
 - Mini App brauzerda/Telegram'da vizual tekshirilmagan.
 - Mahsulot rasmlari `/media/` orqali Caddy'dan beriladi (deploy/Caddyfile da sozlangan).
+# shopbuilder
